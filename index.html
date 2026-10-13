@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TINEX CreditRisk AI — Version 1.0 Personal Consumer Loan Assessment</title>
+  <meta name="description" content="AI-powered credit risk assessment system for personal consumer loans. Explore risk probabilities, SHAP explainability, and applicant scoring based on supervised machine learning.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- =========================================================================
+       Top Primary Navigation Bar
+       ========================================================================= -->
+  <header class="top-navbar">
+    <div class="nav-container">
+      <div class="brand-section">
+        <a href="index.html" class="brand-logo-wrapper" id="brand-logo-link">
+          <img src="images/logo-rbg.png" alt="TINEX Logo" class="brand-logo-img" id="navbar-brand-logo">
+          <div class="brand-identity">
+            <span class="brand-name">
+              LoanRisk AI
+              <span class="brand-badge">v1.0 Personal</span>
+            </span>
+            <span class="brand-subtext">Credit Risk Assessment Engine</span>
+          </div>
+        </a>
+      </div>
+
+      <nav aria-label="Main Navigation">
+        <ul class="nav-links">
+          <li>
+            <a href="#assessment-portal" class="nav-link active" id="nav-item-assessment">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                <line x1="8" y1="21" x2="16" y2="21"></line>
+                <line x1="12" y1="17" x2="12" y2="21"></line>
+              </svg>
+              Assessment Portal
+            </a>
+          </li>
+          <li>
+            <a href="#batch-upload-section" class="nav-link" id="nav-item-batch">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="17 8 12 3 7 8"></polyline>
+                <line x1="12" y1="3" x2="12" y2="15"></line>
+              </svg>
+              Batch Upload
+            </a>
+          </li>
+          <li>
+            <a href="#risk-indicators" class="nav-link" id="nav-item-matrix">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 20V10"></path>
+                <path d="M18 20V4"></path>
+                <path d="M6 20v-4"></path>
+              </svg>
+              Risk Scale
+            </a>
+          </li>
+          <li>
+            <a href="#v1-scope" class="nav-link" id="nav-item-scope">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="16" x2="12" y2="12"></line>
+                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+              </svg>
+              Scope & Roadmap
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <div class="status-indicator-pill" title="Model Inference Engine Ready">
+          <span class="pulse-dot"></span>
+          <span>Scikit-Learn Baseline (v1.0)</span>
+        </div>
+        <button type="button" class="user-profile-btn" id="dashboard-user-btn" aria-label="Open User Dashboard">
+          <span class="avatar-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+          </span>
+          <span>Dashboard</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- =========================================================================
+       Main Content Container
+       ========================================================================= -->
+  <main class="main-wrapper" id="assessment-portal">
+
+    <!-- Page Context & Header Bar -->
+    <section class="page-context-header" aria-labelledby="main-heading">
+      <nav class="breadcrumb-bar" aria-label="Breadcrumb">
+        <span>AI Credit Risk Assessment</span>
+        <span class="separator">/</span>
+        <span>Version 1.0</span>
+        <span class="separator">/</span>
+        <span class="current-node">Personal Consumer Loans</span>
+      </nav>
+
+      <div class="header-headline-row">
+        <div class="headline-content">
+          <h1 id="main-heading">Personal Consumer Loan Risk Assessment</h1>
+          <p>
+            Educational and portfolio demonstration engine for small personal consumer loans (retail spending, household goods & everyday personal expenses).
+          </p>
+        </div>
+        <div class="header-tags">
+          <span class="tag-badge navy-tag">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            Scope: Small Consumer Loans
+          </span>
+          <span class="tag-badge teal-tag">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            Dataset: Home Credit Default Benchmark
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Assessment Two-Column Workspace -->
+    <div class="assessment-grid">
+
+      <!-- LEFT COLUMN: Applicant Intake Form & Data Upload -->
+      <section class="card-container" aria-labelledby="form-section-title">
+        <div class="card-header-main">
+          <div class="card-header-info">
+            <h2 id="form-section-title">Applicant & Loan Application</h2>
+            <p>Enter applicant details or upload batch files for consumer credit evaluation</p>
+          </div>
+          <div class="mode-toggle-tabs" role="tablist">
+            <button type="button" class="tab-btn active" role="tab" aria-selected="true" id="tab-single">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+              Single Intake
+            </button>
+            <button type="button" class="tab-btn" role="tab" aria-selected="false" id="tab-batch">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+                <polyline points="10 9 9 9 8 9"></polyline>
+              </svg>
+              Batch File
+            </button>
+          </div>
+        </div>
+
+        <form class="card-body-content" id="credit-risk-form" onsubmit="return false;">
+          
+          <!-- SECTION 1: Personal & Demographic Information -->
+          <div class="form-section-block">
+            <div class="section-label-bar">
+              <span class="section-icon-badge">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+              </span>
+              <h3>Personal & Demographic Profile</h3>
+              <span class="section-helper-badge">Applicant Demographics</span>
+            </div>
+
+            <div class="fields-grid-2">
+              <div class="field-group">
+                <label for="applicant-name" class="field-label">
+                  <span>Full Legal Name <span class="label-required">*</span></span>
+                </label>
+                <div class="input-control-wrap">
+                  <span class="input-icon-left">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                  </span>
+                  <input type="text" id="applicant-name" class="form-input has-icon" placeholder="e.g. Sarah Jenkins" value="Sarah Jenkins" required>
+                </div>
+              </div>
+
+              <div class="field-group">
+                <label for="applicant-age" class="field-label">
+                  <span>Age (Years) <span class="label-required">*</span></span>
+                  <span class="label-hint">18 - 85 yrs</span>
+                </label>
+                <div class="input-control-wrap">
+                  <input type="number" id="applicant-age" class="form-input" min="18" max="85" placeholder="32" value="32" required>
+                  <span class="input-affix-right">yrs</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="fields-grid-3" style="margin-top: 1rem;">
+              <div class="field-group">
+                <label for="applicant-gender" class="field-label">Gender</label>
+                <select id="applicant-gender" class="form-select">
+                  <option value="F" selected>Female</option>
+                  <option value="M">Male</option>
+                  <option value="X">Non-binary / Other</option>
+                  <option value="NA">Prefer not to say</option>
+                </select>
+              </div>
+
+              <div class="field-group">
+                <label for="applicant-marriage" class="field-label">
+                  <span>Marriage Status <span class="label-required">*</span></span>
+                </label>
+                <select id="applicant-marriage" class="form-select" required>
+                  <option value="Married" selected>Married</option>
+                  <option value="Single">Single / Unmarried</option>
+                  <option value="Civil Marriage">Civil Partnership</option>
+                  <option value="Separated">Separated / Divorced</option>
+                  <option value="Widowed">Widowed</option>
+                </select>
+              </div>
+
+              <div class="field-group">
+                <label for="applicant-dependents" class="field-label">
+                  <span>Dependents</span>
+                  <span class="label-hint">Children</span>
+                </label>
+                <select id="applicant-dependents" class="form-select">
+                  <option value="0">0 (None)</option>
+                  <option value="1" selected>1 Child</option>
+                  <option value="2">2 Children</option>
+                  <option value="3">3+ Children</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="fields-grid-2" style="margin-top: 1rem;">
+              <div class="field-group">
+                <label for="applicant-education" class="field-label">Education Level</label>
+                <select id="applicant-education" class="form-select">
+                  <option value="Higher Education" selected>Higher Education / University</option>
+                  <option value="Secondary">Secondary / High School</option>
+                  <option value="Incomplete Higher">Incomplete Higher Education</option>
+                  <option value="Lower Secondary">Lower Secondary</option>
+                  <option value="Academic Degree">Academic Postgrad Degree</option>
+                </select>
+              </div>
+
+              <div class="field-group">
+                <label for="applicant-housing" class="field-label">Housing Situation</label>
+                <select id="applicant-housing" class="form-select">
+                  <option value="House/Apartment" selected>House / Apartment (Owned)</option>
+                  <option value="Rented">Rented Apartment</option>
+                  <option value="With Parents">Living with Parents</option>
+                  <option value="Municipal">Municipal / Social Housing</option>
+                  <option value="Co-op">Co-operative Apartment</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- SECTION 2: Employment & Income Profile -->
+          <div class="form-section-block">
+            <div class="section-label-bar">
+              <span class="section-icon-badge">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                  <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                </svg>
+              </span>
+              <h3>Employment & Income Details</h3>
+              <span class="section-helper-badge">Capacity to Repay</span>
+            </div>
+
+            <div class="fields-grid-2">
+              <div class="field-group">
+                <label for="applicant-job" class="field-label">
+                  <span>Job / Occupation <span class="label-required">*</span></span>
+                </label>
+                <select id="applicant-job" class="form-select" required>
+                  <option value="Core Staff" selected>Core Staff / Specialist</option>
+                  <option value="Managers">Corporate Manager / Executive</option>
+                  <option value="Laborers">Commercial / Trades Laborer</option>
+                  <option value="Sales">Sales Staff / Retail</option>
+                  <option value="IT Staff">IT / Software Engineer</option>
+                  <option value="Accountants">Accountant / Finance Officer</option>
+                  <option value="Healthcare">Healthcare / Medical Staff</option>
+                  <option value="Drivers">Transport / Driver</option>
+                  <option value="Self-Employed">Self-Employed Entrepreneur</option>
+                </select>
+              </div>
+
+              <div class="field-group">
+                <label for="employment-duration" class="field-label">
+                  <span>Employment Length</span>
+                  <span class="label-hint">Current job</span>
+                </label>
+                <div class="input-control-wrap">
+                  <input type="number" id="employment-duration" class="form-input" min="0" max="50" step="0.5" value="4.5">
+                  <span class="input-affix-right">years</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="fields-grid-2" style="margin-top: 1rem;">
+              <div class="field-group">
+                <label for="annual-income" class="field-label">
+                  <span>Annual Income <span class="label-required">*</span></span>
+                  <span class="label-hint">Gross USD</span>
+                </label>
+                <div class="input-control-wrap">
+                  <span class="input-icon-left" style="font-weight: 700; color: var(--color-slate-500);">$</span>
+                  <input type="number" id="annual-income" class="form-input has-icon" min="1000" step="500" placeholder="52000" value="52000" required>
+                  <span class="input-affix-right">/ yr</span>
+                </div>
+              </div>
+
+              <div class="field-group">
+                <label for="monthly-debt" class="field-label">
+                  <span>Existing Monthly Debt</span>
+                  <span class="label-hint">Current obligations</span>
+                </label>
+                <div class="input-control-wrap">
+                  <span class="input-icon-left" style="font-weight: 700; color: var(--color-slate-500);">$</span>
+                  <input type="number" id="monthly-debt" class="form-input has-icon" min="0" step="50" placeholder="450" value="450">
+                  <span class="input-affix-right">/ mo</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SECTION 3: Version 1.0 Personal Consumer Loan Details -->
+          <div class="form-section-block">
+            <div class="section-label-bar">
+              <span class="section-icon-badge" style="background-color: var(--color-teal-light); color: var(--color-teal-hover);">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="12" y1="1" x2="12" y2="23"></line>
+                  <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                </svg>
+              </span>
+              <h3>Personal Loan Parameters (v1.0 Scope)</h3>
+              <span class="section-helper-badge" style="color: var(--color-teal-hover); background: var(--color-teal-subtle); border-color: rgba(13, 148, 136, 0.2);">
+                Consumer Retail
+              </span>
+            </div>
+
+            <div class="fields-grid-3">
+              <div class="field-group">
+                <label for="loan-amount" class="field-label">
+                  <span>Loan Amount <span class="label-required">*</span></span>
+                  <span class="label-hint">$500 – $35k</span>
+                </label>
+                <div class="input-control-wrap">
+                  <span class="input-icon-left" style="font-weight: 700; color: var(--color-slate-500);">$</span>
+                  <input type="number" id="loan-amount" class="form-input has-icon" min="500" max="35000" step="250" placeholder="12000" value="12000" required>
+                </div>
+              </div>
+
+              <div class="field-group">
+                <label for="loan-purpose" class="field-label">
+                  <span>Consumer Purpose <span class="label-required">*</span></span>
+                </label>
+                <select id="loan-purpose" class="form-select" required>
+                  <option value="Household Purchases" selected>Household Purchases & Appliances</option>
+                  <option value="Consumer Electronics">Consumer Electronics & Gadgets</option>
+                  <option value="Shopping & Lifestyle">Retail Shopping & Everyday Expenses</option>
+                  <option value="Medical & Emergency">Medical & Personal Emergency</option>
+                  <option value="Education/Tuition">Personal Education / Courses</option>
+                  <option value="Debt Consolidation">Consumer Debt Consolidation</option>
+                </select>
+              </div>
+
+              <div class="field-group">
+                <label for="loan-term" class="field-label">
+                  <span>Repayment Term</span>
+                  <span class="label-hint">Tenure</span>
+                </label>
+                <select id="loan-term" class="form-select">
+                  <option value="12">12 Months (1 Year)</option>
+                  <option value="24" selected>24 Months (2 Years)</option>
+                  <option value="36">36 Months (3 Years)</option>
+                  <option value="48">48 Months (4 Years)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- SECTION 4: Batch Dataset File Upload (JSON / CSV / Excel) -->
+          <div class="form-section-block" id="batch-upload-section">
+            <div class="section-label-bar">
+              <span class="section-icon-badge">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="17 8 12 3 7 8"></polyline>
+                  <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+              </span>
+              <h3>Batch Dataset Upload</h3>
+              <span class="section-helper-badge">JSON • CSV • Excel</span>
+            </div>
+
+            <div class="upload-card-box" id="drop-zone-container">
+              <input type="file" id="batch-file-input" class="file-input-hidden" accept=".json, .csv, .xlsx, .xls" aria-label="Upload batch file for credit risk analysis">
+              <div class="upload-icon-circle">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                  <line x1="12" y1="18" x2="12" y2="12"></line>
+                  <line x1="9" y1="15" x2="12" y2="12"></line>
+                  <line x1="15" y1="15" x2="12" y2="12"></line>
+                </svg>
+              </div>
+              <div class="upload-title">Drag & drop dataset or click to browse</div>
+              <div class="upload-subtitle">Process multiple loan applicants concurrently with batch scoring</div>
+
+              <div class="format-badges-row">
+                <span class="format-chip json">.JSON</span>
+                <span class="format-chip csv">.CSV</span>
+                <span class="format-chip xlsx">.XLSX</span>
+                <span class="format-chip xlsx">.XLS</span>
+              </div>
+
+              <!-- Mock Uploaded File Demonstration State -->
+              <div class="uploaded-file-banner" id="sample-file-preview">
+                <div class="file-info-group">
+                  <span class="file-ext-icon">CSV</span>
+                  <div class="file-name-meta">
+                    <div class="file-name">sample_personal_loans_batch.csv</div>
+                    <div class="file-meta">50 applicant records • 18.4 KB • Verified Home Credit format</div>
+                  </div>
+                </div>
+                <button type="button" class="remove-file-btn" title="Remove file" aria-label="Remove uploaded sample file">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                </button>
+              </div>
+
+              <div class="upload-sample-link-bar">
+                <span>Looking for templates?</span>
+                <a href="#download-sample" class="sample-link" id="sample-template-link">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                  </svg>
+                  Download sample_applicant_schema.csv / json
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Form Actions -->
+          <div class="form-actions-footer">
+            <button type="button" class="btn-secondary" id="btn-reset-form">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                <path d="M3 3v5h5"></path>
+              </svg>
+              Reset Inputs
+            </button>
+
+            <button type="button" class="btn-primary" id="btn-evaluate-risk">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              Evaluate Loan Risk (v1.0)
+            </button>
+          </div>
+
+        </form>
+      </section>
+
+      <!-- RIGHT COLUMN: Risk Assessment Overview & AI Insights -->
+      <!-- Styled to match the user's provided reference layout and colors -->
+      <aside class="overview-card-wrapper" aria-labelledby="overview-title">
+        
+        <div class="overview-header">
+          <h2 id="overview-title">Risk Assessment Overview</h2>
+          <p>Personal consumer loan analysis</p>
+        </div>
+
+        <!-- Upper Metric Boxes: Estimated Risk & Loan Amount -->
+        <div class="metric-cards-row">
+          
+          <!-- Box 1: Estimated Risk -->
+          <div class="metric-box" id="box-estimated-risk">
+            <div>
+              <div class="metric-box-label">Estimated Risk</div>
+              <div class="metric-box-value" id="val-risk-score">18.4%</div>
+            </div>
+            <span class="metric-pill-badge pill-moderate-subtle" id="badge-risk-status">
+              Illustrative probability
+            </span>
+          </div>
+
+          <!-- Box 2: Loan Amount -->
+          <div class="metric-box" id="box-loan-amount">
+            <div>
+              <div class="metric-box-label">Loan Amount</div>
+              <div class="metric-box-value" id="val-loan-amt">$12,000</div>
+            </div>
+            <span class="metric-pill-badge pill-teal-label">
+              Consumer Loan
+            </span>
+          </div>
+
+        </div>
+
+        <!-- AI Risk Insights Card (Teal Highlight Component) -->
+        <div class="ai-insights-card" id="ai-insights-box">
+          <div class="ai-insights-header">
+            <span class="ai-icon-teal">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2a4 4 0 0 0-4 4v1a4 4 0 0 0-4 4 4 4 0 0 0 4 4v1a4 4 0 0 0 8 0v-1a4 4 0 0 0 4-4 4 4 0 0 0-4-4V6a4 4 0 0 0-4-4z"></path>
+                <circle cx="12" cy="12" r="2"></circle>
+              </svg>
+            </span>
+            <h3>AI Risk Insights</h3>
+          </div>
+          <p class="ai-insights-text">
+            Monthly debt obligations and requested loan amount are important factors to review.
+          </p>
+          <div class="ai-tag-recommended">
+            Further financial review recommended
+          </div>
+        </div>
+
+        <!-- Explainability & Contributing Factors (SHAP feature breakdown from README) -->
+        <div class="explainability-section">
+          <div class="explainability-title-row">
+            <h4>Contributing Feature Signals</h4>
+            <span class="shap-badge">SHAP Impact</span>
+          </div>
+          <div class="feature-bars-list">
+            
+            <div class="feature-item">
+              <div class="feature-info">
+                <span>Debt-to-Income Annuity ($450 / mo)</span>
+                <span class="feature-impact increase">+5.2% Risk</span>
+              </div>
+              <div class="bar-track">
+                <div class="bar-fill fill-increase" style="width: 58%;"></div>
+              </div>
+            </div>
+
+            <div class="feature-item">
+              <div class="feature-info">
+                <span>Requested Loan Size ($12,000)</span>
+                <span class="feature-impact increase">+3.8% Risk</span>
+              </div>
+              <div class="bar-track">
+                <div class="bar-fill fill-increase" style="width: 42%;"></div>
+              </div>
+            </div>
+
+            <div class="feature-item">
+              <div class="feature-info">
+                <span>Continuous Employment (4.5 yrs)</span>
+                <span class="feature-impact decrease">-6.1% Risk</span>
+              </div>
+              <div class="bar-track">
+                <div class="bar-fill fill-decrease" style="width: 65%;"></div>
+              </div>
+            </div>
+
+            <div class="feature-item">
+              <div class="feature-info">
+                <span>Homeownership Status (Owned)</span>
+                <span class="feature-impact decrease">-4.3% Risk</span>
+              </div>
+              <div class="bar-track">
+                <div class="bar-fill fill-decrease" style="width: 48%;"></div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Large Primary Action Button (Matching Reference Image) -->
+        <button type="button" class="btn-new-assessment" id="btn-new-assessment">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+          </svg>
+          New Risk Assessment
+        </button>
+
+        <p class="card-disclaimer-note">
+          Illustrative UI only — not a real credit assessment
+        </p>
+
+      </aside>
+
+    </div>
+
+    <!-- =========================================================================
+         Risk Indicator Scale Reference (Image 1 Color Palette Specifications)
+         ========================================================================= -->
+    <section class="palette-reference-section" id="risk-indicators" aria-labelledby="risk-palette-title">
+      <div class="palette-sec-header">
+        <h3 id="risk-palette-title">Risk Indicator Standard Scale</h3>
+        <p>
+          Consistent repayment risk tiers across the platform according to calibrated statistical default thresholds.
+        </p>
+      </div>
+
+      <div class="risk-indicators-grid">
+        
+        <!-- Low Risk Indicator Card -->
+        <div class="risk-level-card low">
+          <div class="risk-card-left">
+            <div class="risk-icon-pill">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
+            </div>
+            <div class="risk-level-meta">
+              <h4>Low Risk</h4>
+              <p>Lower predicted risk</p>
+            </div>
+          </div>
+          <span class="risk-hex-code">#16A34A</span>
+        </div>
+
+        <!-- Moderate Risk Indicator Card -->
+        <div class="risk-level-card mod">
+          <div class="risk-card-left">
+            <div class="risk-icon-pill">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
+            </div>
+            <div class="risk-level-meta">
+              <h4>Moderate Risk</h4>
+              <p>Additional review suggested</p>
+            </div>
+          </div>
+          <span class="risk-hex-code">#D97706</span>
+        </div>
+
+        <!-- High Risk Indicator Card -->
+        <div class="risk-level-card high">
+          <div class="risk-card-left">
+            <div class="risk-icon-pill">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
+            </div>
+            <div class="risk-level-meta">
+              <h4>High Risk</h4>
+              <p>Higher predicted risk</p>
+            </div>
+          </div>
+          <span class="risk-hex-code">#DC2626</span>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         Version Roadmap & Scope Documentation (Aligned with README.md)
+         ========================================================================= -->
+    <section class="readme-scope-section" id="v1-scope" aria-labelledby="roadmap-title">
+      <div class="palette-sec-header">
+        <h3 id="roadmap-title">System Scope & Multi-Phase Roadmap</h3>
+        <p>
+          Version 1.0 focuses exclusively on personal consumer loans. Secured lending and corporate financing modules belong to future development phases.
+        </p>
+      </div>
+
+      <div class="scope-grid-3">
+        
+        <div class="scope-card active-version">
+          <span class="scope-version-badge">Version 1.0 — Active</span>
+          <h4>Personal Consumer Loans</h4>
+          <p>
+            Small personal retail loans for household purchases, shopping, and everyday consumer spending. Features benchmarked against the Home Credit Default dataset with probability calibration and SHAP explainability.
+          </p>
+        </div>
+
+        <div class="scope-card future-version">
+          <span class="scope-version-badge">Version 2.0 — Planned</span>
+          <h4>Secured Lending</h4>
+          <p>
+            Dedicated mortgage and auto-finance modules utilizing collateral valuations, property-specific risk factors, and domain-appropriate underwriting datasets.
+          </p>
+        </div>
+
+        <div class="scope-card future-version">
+          <span class="scope-version-badge">Version 3.0 — Concept</span>
+          <h4>Corporate Credit Analysis</h4>
+          <p>
+            Commercial balance sheet distress modeling, corporate financial debt servicing covenants, and business cash-flow solvency assessments.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- =========================================================================
+       Footer with Responsible Use Disclaimers
+       ========================================================================= -->
+  <footer class="main-footer">
+    <div class="footer-inner">
+      <div class="footer-top-row">
+        <div class="footer-brand">
+          <div class="footer-brand-title">TINEX CreditRisk AI System</div>
+          <p>
+            A practical machine learning engineering portfolio project combining supervised classification benchmarks, model calibration, and explainability for consumer credit risk.
+          </p>
+        </div>
+
+        <div class="footer-links-group">
+          <div class="footer-col">
+            <h5>Architecture</h5>
+            <ul>
+              <li><a href="#assessment-portal">FastAPI / Scikit-Learn Model</a></li>
+              <li><a href="#assessment-portal">LightGBM & Random Forest</a></li>
+              <li><a href="#assessment-portal">SHAP TreeExplainer</a></li>
+              <li><a href="#assessment-portal">Probability Calibration</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h5>Data Formats</h5>
+            <ul>
+              <li><a href="#batch-upload-section">JSON Payloads (.json)</a></li>
+              <li><a href="#batch-upload-section">CSV Application Tables (.csv)</a></li>
+              <li><a href="#batch-upload-section">Excel Workbooks (.xlsx)</a></li>
+              <li><a href="#batch-upload-section">Home Credit Schema</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h5>Governance</h5>
+            <ul>
+              <li><a href="#v1-scope">Version 1.0 Milestone</a></li>
+              <li><a href="#v1-scope">Responsible Use Policy</a></li>
+              <li><a href="#v1-scope">Model Fairness</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-disclaimer-box">
+        <strong>Responsible Use and Limitations:</strong> This software is developed strictly for educational, research, and portfolio demonstration purposes. Predictions should not be used to make real-world credit approval, pricing, or adverse-action decisions. Public training datasets may reflect historical biases and non-representative borrowing demographics.
+      </div>
+
+      <div class="footer-bottom-bar">
+        <span>&copy; 2026 TINEX AI Credit Risk Assessment System. Built for Version 1.0 Portfolio Milestone.</span>
+        <span>Status: Planning & Development — Version 1.0</span>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
